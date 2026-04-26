@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { bootstrapProfile } from "@/lib/profiles";
+// TODO: Trigger sendWelcomeEmail after successful signup when RESEND_API_KEY is configured.
 
 export async function loginAction(formData: FormData) {
   const email = String(formData.get("email") || "");
@@ -34,8 +35,12 @@ export async function signupAction(formData: FormData) {
     redirect(`/signup?error=${encodeURIComponent(error.message)}`);
   }
 
-  if (data.user) {
-    await bootstrapProfile(data.user, { artistName, genre });
+  if (data.user && data.session) {
+    try {
+      await bootstrapProfile(data.user, { artistName, genre });
+    } catch (bootstrapError) {
+      console.error("Profile bootstrap failed during signup:", bootstrapError);
+    }
   }
 
   if (!data.session) {

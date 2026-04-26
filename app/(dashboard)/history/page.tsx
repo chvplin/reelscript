@@ -1,8 +1,16 @@
-export default function HistoryPage() {
-  return (
-    <div className="rounded-2xl border bg-card/80 p-6">
-      <h1 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">History</h1>
-      <p className="mt-2 text-sm text-muted">Generation history timeline is queued for the next implementation step.</p>
-    </div>
-  );
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getProfileForUser } from "@/lib/profiles";
+import { HistoryClient } from "@/components/history-client";
+
+export default async function HistoryPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+  const profile = await getProfileForUser(user.id);
+  if (!profile) redirect("/login");
+
+  return <HistoryClient tier={profile.subscription_tier} />;
 }

@@ -15,12 +15,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   let profile = await getProfileForUser(user.id);
   if (!profile) {
-    await bootstrapProfile(user);
+    try {
+      await bootstrapProfile(user);
+    } catch (error) {
+      console.error("Profile bootstrap failed in dashboard:", error);
+      redirect("/login?error=We%20could%20not%20finish%20setting%20up%20your%20profile.%20Please%20log%20in%20again.");
+    }
     profile = await getProfileForUser(user.id);
   }
 
   if (!profile) {
-    redirect("/login?error=Profile%20setup%20failed");
+    redirect("/login?error=Profile%20is%20missing.%20Please%20log%20in%20again.");
   }
 
   return <DashboardShell profile={profile}>{children}</DashboardShell>;
