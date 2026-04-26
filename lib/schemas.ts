@@ -40,3 +40,15 @@ export const ResearchCollectSchema = z.object({
   sourceType: z.enum(["reel_url", "profile", "hashtag"]),
   query: z.string().min(2).max(200),
 });
+
+export const ViralCaptionAnalysisInputSchema = z.object({
+  captionText: z.string().min(3).max(3000),
+  hashtags: z.array(z.string()).default([]),
+  metrics: z
+    .object({
+      likes: z.number().optional(),
+      views: z.number().optional(),
+      comments: z.number().optional(),
+    })
+    .optional(),
+});
