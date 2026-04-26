@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f172a;
+  --foreground: #ffffff;
+  --muted: #94a3b8;
+  --card: #1e293b;
+  --card-border: #334155;
+  --purple: #a855f7;
+  --pink: #ec4899;
+  --blue: #3b82f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-purple: var(--purple);
+  --color-pink: var(--pink);
+  --color-blue: var(--blue);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.14), transparent 35%),
+    radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.14), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.12), transparent 40%);
+}
+
+* {
+  border-color: var(--card-border);
+}
+
+.card-glow {
+  box-shadow:
+    0 0 0 1px rgba(168, 85, 247, 0.3),
+    0 8px 40px rgba(236, 72, 153, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(120deg, var(--purple), var(--pink), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
