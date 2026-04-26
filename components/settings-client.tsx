@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { MotionPage } from "@/components/ui/MotionPage";
+import { GlassButton } from "@/components/ui/GlassButton";
 
 type ProfilePayload = {
   artist_name: string;
@@ -79,29 +81,29 @@ export function SettingsClient() {
   }
 
   if (!profile) {
-    return <div className="rounded-2xl border bg-slate-900/40 p-8 text-center text-muted">Loading settings...</div>;
+    return <div className="glass-card rounded-2xl p-8 text-center text-muted">Loading settings...</div>;
   }
 
   return (
-    <div className="space-y-4">
-      <section className="rounded-2xl border bg-card/80 p-5">
+    <MotionPage className="space-y-4">
+      <section className="glass-card rounded-2xl p-5">
         <h1 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">Settings</h1>
       </section>
 
-      <section className="rounded-2xl border bg-card/80 p-5">
+      <section className="glass-card rounded-2xl p-5">
         <h2 className="text-lg font-semibold">Profile</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3" value={profile.artist_name} onChange={(e) => setProfile((p) => (p ? { ...p, artist_name: e.target.value } : p))} />
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3" value={profile.genre} onChange={(e) => setProfile((p) => (p ? { ...p, genre: e.target.value } : p))} />
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3 md:col-span-2" value={profile.email} disabled />
+          <input className="glass-panel h-11 rounded-xl px-3" value={profile.artist_name} onChange={(e) => setProfile((p) => (p ? { ...p, artist_name: e.target.value } : p))} />
+          <input className="glass-panel h-11 rounded-xl px-3" value={profile.genre} onChange={(e) => setProfile((p) => (p ? { ...p, genre: e.target.value } : p))} />
+          <input className="glass-panel h-11 rounded-xl px-3 md:col-span-2" value={profile.email} disabled />
         </div>
       </section>
 
-      <section className="rounded-2xl border bg-card/80 p-5">
+      <section className="glass-card rounded-2xl p-5">
         <h2 className="text-lg font-semibold">Personality Settings</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           <input
-            className="h-11 rounded-xl border bg-slate-900/60 px-3"
+            className="glass-panel h-11 rounded-xl px-3"
             placeholder="Tone"
             value={profile.personality_settings?.tone || ""}
             onChange={(e) =>
@@ -109,7 +111,7 @@ export function SettingsClient() {
             }
           />
           <input
-            className="h-11 rounded-xl border bg-slate-900/60 px-3"
+            className="glass-panel h-11 rounded-xl px-3"
             placeholder="Emoji level"
             value={profile.personality_settings?.emojiLevel || ""}
             onChange={(e) =>
@@ -117,7 +119,7 @@ export function SettingsClient() {
             }
           />
           <input
-            className="h-11 rounded-xl border bg-slate-900/60 px-3"
+            className="glass-panel h-11 rounded-xl px-3"
             placeholder="Caption length"
             value={profile.personality_settings?.lengthPreference || ""}
             onChange={(e) =>
@@ -127,7 +129,7 @@ export function SettingsClient() {
             }
           />
           <input
-            className="h-11 rounded-xl border bg-slate-900/60 px-3"
+            className="glass-panel h-11 rounded-xl px-3"
             placeholder="Preferred vibe"
             value={profile.personality_settings?.vibe || ""}
             onChange={(e) =>
@@ -135,51 +137,51 @@ export function SettingsClient() {
             }
           />
         </div>
-        <button onClick={save} disabled={saving} className="mt-4 min-h-11 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 font-semibold">
+        <GlassButton onClick={save} disabled={saving} className="mt-4 px-4">
           {saving ? "Saving..." : "Save Settings"}
-        </button>
+        </GlassButton>
       </section>
 
-      <section className="rounded-2xl border bg-card/80 p-5">
+      <section className="glass-card rounded-2xl p-5">
         <h2 className="text-lg font-semibold">Billing</h2>
         <p className="mt-1 text-sm text-muted">
           Plan: {profile.subscription_tier.toUpperCase()} - Credits: {profile.credits_remaining}
         </p>
         {profile.monthly_reset_at ? <p className="text-sm text-muted">Monthly reset: {new Date(profile.monthly_reset_at).toLocaleDateString()}</p> : null}
         <div className="mt-3 flex flex-wrap gap-2">
-          <button className="min-h-11 rounded-xl border px-4" onClick={() => goCheckout("starter")}>
+          <button className="glass-panel min-h-11 rounded-xl px-4" onClick={() => goCheckout("starter")}>
             Upgrade Starter
           </button>
-          <button className="min-h-11 rounded-xl border px-4" onClick={() => goCheckout("pro")}>
+          <button className="glass-panel min-h-11 rounded-xl px-4" onClick={() => goCheckout("pro")}>
             Upgrade Pro
           </button>
-          <button className="min-h-11 rounded-xl border px-4" onClick={() => goCheckout("credits")}>
+          <button className="glass-panel min-h-11 rounded-xl px-4" onClick={() => goCheckout("credits")}>
             Buy 20 Credits
           </button>
-          <button className="min-h-11 rounded-xl border px-4" onClick={manageBilling}>
+          <button className="glass-panel min-h-11 rounded-xl px-4" onClick={manageBilling}>
             Manage Billing
           </button>
         </div>
       </section>
 
-      <section className="rounded-2xl border border-rose-400/40 bg-rose-950/20 p-5">
+      <section className="glass-card rounded-2xl border border-rose-400/40 bg-rose-950/20 p-5">
         <h2 className="text-lg font-semibold text-rose-200">Danger Zone</h2>
         <p className="mt-1 text-sm text-rose-200/80">Deleting your account removes app profile data permanently.</p>
         {!showDanger ? (
-          <button className="mt-3 min-h-11 rounded-xl border border-rose-400/50 px-4 text-rose-200" onClick={() => setShowDanger(true)}>
+          <button className="glass-panel mt-3 min-h-11 rounded-xl border border-rose-400/50 px-4 text-rose-200" onClick={() => setShowDanger(true)}>
             Delete account
           </button>
         ) : (
           <div className="mt-3 flex gap-2">
-            <button className="min-h-11 rounded-xl border border-rose-400/50 px-4 text-rose-200" onClick={deleteAccount}>
+            <button className="glass-panel min-h-11 rounded-xl border border-rose-400/50 px-4 text-rose-200" onClick={deleteAccount}>
               Confirm delete
             </button>
-            <button className="min-h-11 rounded-xl border px-4" onClick={() => setShowDanger(false)}>
+            <button className="glass-panel min-h-11 rounded-xl px-4" onClick={() => setShowDanger(false)}>
               Cancel
             </button>
           </div>
         )}
       </section>
-    </div>
+    </MotionPage>
   );
 }

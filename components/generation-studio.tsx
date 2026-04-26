@@ -4,6 +4,9 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { GenerationResult } from "@/lib/types";
 import Image from "next/image";
+import { MotionPage } from "@/components/ui/MotionPage";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { GlassButton } from "@/components/ui/GlassButton";
 
 type Props = {
   initialCredits: number;
@@ -93,11 +96,11 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-2xl border bg-card/80 p-5 sm:p-6">
+    <MotionPage className="space-y-6">
+      <GlassCard className="p-5 sm:p-6" hover={false}>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <h1 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">Generate</h1>
-          <span className="rounded-lg border border-purple-400/40 px-3 py-1 text-sm">
+          <span className="glass-panel rounded-full px-3 py-1 text-sm">
             {subscriptionTier === "pro" ? "Unlimited" : `${credits} credits`}
           </span>
         </div>
@@ -106,7 +109,7 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
           <label className="space-y-2">
             <span className="text-sm text-muted">Content Type</span>
             <select
-              className="h-11 w-full rounded-xl border bg-slate-900/60 px-3"
+              className="glass-panel h-11 w-full rounded-xl px-3"
               value={inputs.contentType}
               onChange={(e) => setInputs((prev) => ({ ...prev, contentType: e.target.value as GenerationInput["contentType"] }))}
             >
@@ -120,7 +123,7 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
           <label className="space-y-2">
             <span className="text-sm text-muted">Caption Length</span>
             <select
-              className="h-11 w-full rounded-xl border bg-slate-900/60 px-3"
+              className="glass-panel h-11 w-full rounded-xl px-3"
               value={inputs.lengthPreference}
               onChange={(e) =>
                 setInputs((prev) => ({ ...prev, lengthPreference: e.target.value as GenerationInput["lengthPreference"] }))
@@ -136,7 +139,7 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
         <label className="mt-4 block space-y-2">
           <span className="text-sm text-muted">Visual Description</span>
           <textarea
-            className="min-h-24 w-full rounded-xl border bg-slate-900/60 p-3"
+            className="glass-panel min-h-24 w-full rounded-xl p-3"
             maxLength={200}
             value={inputs.visualDescription}
             onChange={(e) => setInputs((prev) => ({ ...prev, visualDescription: e.target.value }))}
@@ -146,7 +149,7 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
         <label className="mt-4 block space-y-2">
           <span className="text-sm text-muted">Song Context (optional)</span>
           <textarea
-            className="min-h-20 w-full rounded-xl border bg-slate-900/60 p-3"
+            className="glass-panel min-h-20 w-full rounded-xl p-3"
             maxLength={300}
             value={inputs.songContext}
             onChange={(e) => setInputs((prev) => ({ ...prev, songContext: e.target.value }))}
@@ -154,28 +157,28 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
         </label>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <button
+          <GlassButton
             disabled={loading || !canGenerate}
             onClick={() => callGenerate(inputs)}
-            className="min-h-11 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-5 font-semibold disabled:opacity-60"
+            className="px-5 disabled:opacity-60"
           >
             {loading ? "Cooking up captions..." : canGenerate ? "Generate Captions ✨" : "Buy Credits"}
-          </button>
+          </GlassButton>
           <button
             disabled={loading || !lastInputs}
             onClick={() => lastInputs && callGenerate(lastInputs)}
-            className="min-h-11 rounded-xl border px-4"
+            className="glass-panel min-h-11 rounded-xl px-4"
           >
             Regenerate
           </button>
-          <button disabled={!results} onClick={saveGeneration} className="min-h-11 rounded-xl border px-4">
+          <button disabled={!results} onClick={saveGeneration} className="glass-panel min-h-11 rounded-xl px-4">
             Save Entire Generation
           </button>
         </div>
-      </section>
+      </GlassCard>
 
       {!results ? (
-        <section className="rounded-2xl border border-dashed bg-slate-900/40 p-8 text-center text-muted">
+        <GlassCard className="border-dashed p-8 text-center text-muted" hover={false}>
           <div className="mx-auto mb-4 max-w-md overflow-hidden rounded-xl border border-card-border/70">
             <Image
               src="/assets/mockups/dashboard-empty-state.svg"
@@ -186,15 +189,15 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
             />
           </div>
           Run your first generation to see captions, hooks, and hashtags.
-        </section>
+        </GlassCard>
       ) : (
-        <section className="rounded-2xl border bg-card/80 p-4 sm:p-6">
+        <GlassCard className="p-4 sm:p-6" hover={false}>
           <div className="mb-4 flex flex-wrap gap-2">
             {(["captions", "hooks", "hashtags"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`min-h-11 rounded-lg px-4 capitalize ${activeTab === tab ? "bg-purple-500/30 border border-purple-400/50" : "border"}`}
+                className={`min-h-11 rounded-lg px-4 capitalize ${activeTab === tab ? "glass-panel border-purple-400/50" : "glass-panel"}`}
               >
                 {tab}
               </button>
@@ -204,7 +207,7 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
           {activeTab === "captions" && (
             <div className="space-y-3">
               {results.captions.map((caption, index) => (
-                <article key={`${caption.text}-${index}`} className="rounded-xl border bg-slate-900/50 p-4">
+                <article key={`${caption.text}-${index}`} className="glass-card shimmer-border rounded-xl p-4">
                   <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                     <span className="rounded-full border border-blue-400/50 px-2 py-1 text-xs">{caption.tone}</span>
                     <span className={`text-xs ${caption.text.length > 2000 ? "text-rose-300" : "text-muted"}`}>
@@ -213,10 +216,10 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
                   </div>
                   <p className="whitespace-pre-wrap text-sm leading-6">{caption.text}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => copy(caption.text, `c-${index}`)}>
+                    <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => copy(caption.text, `c-${index}`)}>
                       {copiedItem === `c-${index}` ? "Copied!" : "Copy"}
                     </button>
-                    <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => saveFavorite(caption.text)}>
+                    <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => saveFavorite(caption.text)}>
                       Favorite
                     </button>
                   </div>
@@ -228,9 +231,9 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
           {activeTab === "hooks" && (
             <div className="grid gap-3 md:grid-cols-2">
               {results.hooks.map((hook, index) => (
-                <article key={hook} className="rounded-xl border bg-slate-900/50 p-4">
+                <article key={hook} className="glass-card rounded-xl p-4">
                   <p>{hook}</p>
-                  <button className="mt-3 min-h-11 rounded-lg border px-3 text-sm" onClick={() => copy(hook, `h-${index}`)}>
+                  <button className="glass-panel mt-3 min-h-11 rounded-lg px-3 text-sm" onClick={() => copy(hook, `h-${index}`)}>
                     {copiedItem === `h-${index}` ? "Copied!" : "Copy"}
                   </button>
                 </article>
@@ -241,23 +244,23 @@ export function GenerationStudio({ initialCredits, subscriptionTier }: Props) {
           {activeTab === "hashtags" && (
             <div className="space-y-4">
               {Object.entries(results.hashtags).map(([category, tags]) => (
-                <article key={category} className="rounded-xl border bg-slate-900/50 p-4">
+                <article key={category} className="glass-card rounded-xl p-4">
                   <div className="mb-2 flex items-center justify-between">
                     <p className="font-semibold capitalize">{category}</p>
-                    <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => copy(tags.join(" "), `t-${category}`)}>
+                    <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => copy(tags.join(" "), `t-${category}`)}>
                       {copiedItem === `t-${category}` ? "Copied!" : "Copy"}
                     </button>
                   </div>
                   <p className="text-sm text-slate-300">{tags.join(" ")}</p>
                 </article>
               ))}
-              <button className="min-h-11 rounded-xl border px-4" onClick={() => copy(hashtagsAll, "all-tags")}>
+              <button className="glass-panel min-h-11 rounded-xl px-4" onClick={() => copy(hashtagsAll, "all-tags")}>
                 {copiedItem === "all-tags" ? "Copied!" : "Copy All Hashtags"}
               </button>
             </div>
           )}
-        </section>
+        </GlassCard>
       )}
-    </div>
+    </MotionPage>
   );
 }

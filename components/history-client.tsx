@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { MotionPage } from "@/components/ui/MotionPage";
 
 type Generation = {
   id: string;
@@ -78,13 +79,13 @@ export function HistoryClient({ tier }: Props) {
   }, [tier]);
 
   return (
-    <div className="space-y-4">
-      <div className="rounded-2xl border bg-card/80 p-5">
+    <MotionPage className="space-y-4">
+      <div className="glass-card rounded-2xl p-5">
         <h1 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">History</h1>
         <p className="mt-1 text-sm text-muted">{retention}</p>
         <div className="mt-4 grid gap-3 md:grid-cols-4">
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3" placeholder="Search descriptions" value={q} onChange={(e) => setQ(e.target.value)} />
-          <select className="h-11 rounded-xl border bg-slate-900/60 px-3" value={contentType} onChange={(e) => setContentType(e.target.value)}>
+          <input className="glass-panel h-11 rounded-xl px-3" placeholder="Search descriptions" value={q} onChange={(e) => setQ(e.target.value)} />
+          <select className="glass-panel h-11 rounded-xl px-3" value={contentType} onChange={(e) => setContentType(e.target.value)}>
             <option value="all">All types</option>
             <option value="reel">Reel</option>
             <option value="static">Static</option>
@@ -92,14 +93,14 @@ export function HistoryClient({ tier }: Props) {
             <option value="performance">Performance</option>
             <option value="personal">Personal</option>
           </select>
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3" type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
-          <input className="h-11 rounded-xl border bg-slate-900/60 px-3" type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+          <input className="glass-panel h-11 rounded-xl px-3" type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
+          <input className="glass-panel h-11 rounded-xl px-3" type="date" value={to} onChange={(e) => setTo(e.target.value)} />
         </div>
       </div>
 
       <div className="space-y-3">
         {items.map((item) => (
-          <article key={item.id} className="rounded-2xl border bg-slate-900/50 p-4">
+          <article key={item.id} className="glass-card rounded-2xl p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="font-semibold capitalize">{item.content_type}</p>
@@ -109,18 +110,18 @@ export function HistoryClient({ tier }: Props) {
             </div>
             <p className="mt-2 text-sm text-slate-300">{item.visual_description}</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => setExpanded(expanded === item.id ? null : item.id)}>
+              <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => setExpanded(expanded === item.id ? null : item.id)}>
                 {expanded === item.id ? "Hide Results" : "View Results"}
               </button>
-              <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => runAgain(item)}>
+              <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => runAgain(item)}>
                 Run Again
               </button>
-              <button className="min-h-11 rounded-lg border px-3 text-sm" onClick={() => remove(item.id)}>
+              <button className="glass-panel min-h-11 rounded-lg px-3 text-sm" onClick={() => remove(item.id)}>
                 Delete
               </button>
             </div>
             {expanded === item.id && (
-              <div className="mt-4 space-y-2 rounded-xl border bg-slate-950/50 p-3 text-sm">
+              <div className="glass-panel mt-4 space-y-2 rounded-xl p-3 text-sm">
                 {(item.results?.captions || []).slice(0, 4).map((cap, idx) => (
                   <p key={`${item.id}-${idx}`}>{cap.text}</p>
                 ))}
@@ -129,6 +130,6 @@ export function HistoryClient({ tier }: Props) {
           </article>
         ))}
       </div>
-    </div>
+    </MotionPage>
   );
 }

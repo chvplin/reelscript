@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 
 type DemoVideo = {
   src: string;
@@ -25,16 +26,18 @@ export function VideoMarquee() {
     <div className="marquee-mask mt-10 overflow-hidden rounded-2xl border border-card-border/70 bg-slate-950/40 p-4">
       <div className="marquee-track flex w-max gap-4 hover:[animation-play-state:paused]">
         {items.map((item, index) => (
-          <article
+          <motion.article
             key={`${item.fallback}-${index}`}
-            className="group relative aspect-[9/16] w-[170px] overflow-hidden rounded-xl border border-card-border/80 bg-slate-900 transition hover:shadow-[0_0_0_1px_rgba(168,85,247,0.4),0_12px_40px_rgba(236,72,153,0.35)] sm:w-[200px]"
+            whileHover={{ scale: 1.02, y: -3 }}
+            transition={{ type: "spring", stiffness: 250, damping: 22 }}
+            className="group glass-card relative aspect-[9/16] w-[170px] overflow-hidden rounded-xl border-card-border/80 transition hover:shadow-[0_0_0_1px_rgba(168,85,247,0.4),0_12px_40px_rgba(236,72,153,0.35)] sm:w-[200px]"
           >
             <VideoCard item={item} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 opacity-90" />
             <p className="capcut-text absolute inset-0 flex items-center justify-center px-4 text-center whitespace-pre-line">
               {item.text}
             </p>
-          </article>
+          </motion.article>
         ))}
       </div>
     </div>

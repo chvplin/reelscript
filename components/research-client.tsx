@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import type { GenerationResult } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { MotionPage } from "@/components/ui/MotionPage";
+import { GlassButton } from "@/components/ui/GlassButton";
 
 type SourceType = "reel_url" | "profile" | "hashtag";
 type Entry = {
@@ -116,8 +118,8 @@ source caption sample: ${selected.captionPreview}`;
   }
 
   return (
-    <div className="space-y-5">
-      <section className="rounded-2xl border bg-card/80 p-5">
+    <MotionPage className="space-y-5">
+      <section className="glass-card rounded-2xl p-5">
         <h1 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">Viral Caption Research</h1>
         <p className="mt-2 text-sm text-muted">
           Study what&apos;s working in public music promo captions, then generate original captions from the pattern.
@@ -129,7 +131,7 @@ source caption sample: ${selected.captionPreview}`;
           <select
             value={sourceType}
             onChange={(e) => setSourceType(e.target.value as SourceType)}
-            className="h-11 rounded-xl border bg-slate-900/60 px-3"
+            className="glass-panel h-11 rounded-xl px-3"
           >
             <option value="reel_url">Instagram Reel URL</option>
             <option value="profile">Artist Handle</option>
@@ -138,12 +140,12 @@ source caption sample: ${selected.captionPreview}`;
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-11 rounded-xl border bg-slate-900/60 px-3 md:col-span-2"
+            className="glass-panel h-11 rounded-xl px-3 md:col-span-2"
             placeholder="Paste URL, @artist, or #newmusic"
           />
-          <button onClick={collect} disabled={loading} className="min-h-11 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 font-semibold">
+          <GlassButton onClick={collect} disabled={loading} className="px-4">
             {loading ? "Collecting..." : "Collect"}
-          </button>
+          </GlassButton>
         </div>
         <div className="mt-3 flex items-center gap-2">
           {providerName === "mockProvider" ? (
@@ -155,7 +157,7 @@ source caption sample: ${selected.captionPreview}`;
         </div>
       </section>
 
-      <section className="overflow-x-auto rounded-2xl border bg-card/80 p-4">
+      <section className="glass-card overflow-x-auto rounded-2xl p-4">
         <table className="min-w-[980px] w-full text-sm">
           <thead>
             <tr className="text-left text-muted">
@@ -185,10 +187,10 @@ source caption sample: ${selected.captionPreview}`;
                 </td>
                 <td className="p-2">{new Date(entry.collectedAt).toLocaleString()}</td>
                 <td className="p-2 space-x-2">
-                  <button onClick={() => analyze(entry)} className="rounded-lg border px-3 py-2">
+                  <button onClick={() => analyze(entry)} className="glass-panel rounded-lg px-3 py-2">
                     Analyze Pattern
                   </button>
-                  <a href={entry.reelUrl} target="_blank" rel="noreferrer" className="rounded-lg border px-3 py-2 inline-block">
+                  <a href={entry.reelUrl} target="_blank" rel="noreferrer" className="glass-panel rounded-lg px-3 py-2 inline-block">
                     Open Reel
                   </a>
                 </td>
@@ -205,7 +207,7 @@ source caption sample: ${selected.captionPreview}`;
         </table>
       </section>
 
-      <section className="rounded-2xl border bg-card/80 p-5">
+      <section className="glass-card rounded-2xl p-5">
         <h2 className="text-xl font-semibold">Pattern Summary</h2>
         {analyzing ? (
           <p className="mt-3 text-muted">Analyzing pattern...</p>
@@ -223,17 +225,17 @@ source caption sample: ${selected.captionPreview}`;
           <p className="mt-3 text-muted">Pick a row and click Analyze Pattern.</p>
         )}
 
-        <button
+        <GlassButton
           onClick={generateFromPattern}
           disabled={!pattern || generating}
-          className="mt-4 min-h-11 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 font-semibold disabled:opacity-60"
+          className="mt-4 px-4 disabled:opacity-60"
         >
           {generating ? "Generating..." : "Generate original captions from this pattern"}
-        </button>
+        </GlassButton>
         <button
           onClick={usePatternInGenerator}
           disabled={!pattern}
-          className="mt-3 ml-3 min-h-11 rounded-xl border px-4 font-semibold disabled:opacity-60"
+          className="glass-panel mt-3 ml-3 min-h-11 rounded-xl px-4 font-semibold disabled:opacity-60"
         >
           Use This Pattern in Generator
         </button>
@@ -242,20 +244,20 @@ source caption sample: ${selected.captionPreview}`;
           <div className="mt-5 space-y-2">
             <p className="text-sm text-muted">Generated sample:</p>
             {result.captions.slice(0, 3).map((caption, idx) => (
-              <div key={idx} className="rounded-xl border bg-slate-900/40 p-3 text-sm">
+              <div key={idx} className="glass-panel rounded-xl p-3 text-sm">
                 {caption.text}
               </div>
             ))}
           </div>
         ) : null}
       </section>
-    </div>
+    </MotionPage>
   );
 }
 
 function PatternItem({ label, value }: { label: string; value: string }) {
   return (
-    <article className="rounded-xl border bg-slate-900/50 p-3">
+    <article className="glass-panel rounded-xl p-3">
       <p className="text-xs uppercase tracking-wide text-muted">{label}</p>
       <p className="mt-1 text-sm">{value}</p>
     </article>
