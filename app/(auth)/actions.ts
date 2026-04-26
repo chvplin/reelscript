@@ -38,6 +38,10 @@ export async function signupAction(formData: FormData) {
     await bootstrapProfile(data.user, { artistName, genre });
   }
 
+  if (!data.session) {
+    redirect("/login?error=Check%20your%20email%20to%20confirm%20your%20account%20before%20logging%20in.");
+  }
+
   redirect("/generate");
 }
 
