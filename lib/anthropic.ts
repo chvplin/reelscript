@@ -24,11 +24,15 @@ ${input.visualDescription}
 SONG CONTEXT:
 ${input.songContext || "None provided"}
 
+TREND PATTERN NOTES (optional):
+${input.trendNotes || "None provided"}
+
 RULES:
 1) Keep every caption under Instagram limit.
 2) Keep style Gen-Z/music-culture aware but authentic.
 3) Vary format: POV, statement, question, punchline.
-4) Output JSON only.
+4) Do not copy or closely paraphrase any source caption. Use only high-level patterns.
+5) Output JSON only.
 
 OUTPUT JSON SHAPE:
 {

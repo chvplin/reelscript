@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { VideoMarquee } from "@/components/landing/video-marquee";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "ReelScript AI | Instagram Caption Generator for Musicians",
@@ -13,52 +15,72 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="flex items-center justify-between border-b border-card-border/60 bg-slate-950/70 px-6 py-4 backdrop-blur-xl">
-        <span className="text-sm font-mono uppercase tracking-[0.25em] text-purple-200">ReelScript AI</span>
-        <div className="flex items-center gap-3">
-          <Link href="/login" className="rounded-lg border border-card-border px-4 py-2 text-sm hover:border-purple-400/60">
-            Login
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-20 border-b border-card-border/50 bg-slate-950/55 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="text-sm font-mono uppercase tracking-[0.2em] text-purple-200">
+            ReelScript AI
           </Link>
-          <Link
-            href="/signup"
-            className="rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-sm font-semibold"
-          >
-            Start Free
-          </Link>
+          <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
+            <a href="#features" className="hover:text-white">Features</a>
+            <a href="#pricing" className="hover:text-white">Pricing</a>
+            <a href="#examples" className="hover:text-white">Examples</a>
+            <a href="#faq" className="hover:text-white">FAQ</a>
+            <a href="/blog" className="hover:text-white">Blog</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link href={user ? "/generate" : "/login"} className="rounded-full border border-card-border px-4 py-2 text-sm hover:border-purple-400/70">
+              Go to App
+            </Link>
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-card-border bg-slate-900/70 text-xs">
+              {user?.email?.slice(0, 2).toUpperCase() || "U"}
+            </div>
+          </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-14">
-        <section className="hero-background rounded-3xl border bg-card/50 p-8 sm:p-10">
-          <h1 className="text-5xl font-bold leading-tight [font-family:var(--font-space-grotesk)]">
-          Stop staring at a <span className="gradient-text">blank caption box</span>
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg text-slate-300">
-            AI-powered Instagram captions, hooks, and hashtags for musicians who need content that actually sounds like them.
+
+      <main className="mx-auto w-full max-w-7xl px-4 pb-16 pt-8 sm:px-6">
+        <section className="hero-background rounded-3xl border border-card-border/70 px-6 py-16 text-center sm:px-10">
+          <p className="mx-auto inline-flex items-center rounded-full border border-purple-400/40 bg-purple-500/10 px-4 py-1 text-sm text-purple-100">
+            ✨ 100M+ captions generated →
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link href="/signup" className="card-glow rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 font-semibold transition hover:scale-[1.02]">
-              Start Free - 10 Credits
+          <h1 className="mx-auto mt-6 max-w-5xl text-4xl font-extrabold leading-tight [font-family:var(--font-space-grotesk)] sm:text-6xl lg:text-7xl">
+            The easiest way to write <span className="gradient-text">captions that make your music move</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-3xl text-base text-slate-300 sm:text-lg">
+            AI-powered captions, hooks, hashtags, and lyric-style text previews for musicians posting Reels, TikToks, and music promos.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link href="/signup" className="card-glow rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 px-6 py-3 text-sm font-semibold sm:text-base">
+              Try Free — 10 Credits
             </Link>
-            <a href="#pricing" className="rounded-xl border border-card-border px-6 py-3 font-semibold hover:border-blue-400/70">
-              See Pricing
+            <a href="https://discord.com" target="_blank" rel="noreferrer" className="rounded-full border border-card-border bg-slate-900/60 px-6 py-3 text-sm font-semibold hover:border-blue-400/70 sm:text-base">
+              Join Discord
             </a>
           </div>
-          <div className="mt-8 overflow-hidden rounded-2xl border border-card-border/80">
-            <Image
-              src="/assets/mockups/dashboard-empty-state.svg"
-              alt="ReelScript dashboard mockup"
-              width={1200}
-              height={760}
-              className="h-auto w-full"
-              priority
-            />
+          <div className="mt-8">
+            <p className="text-sm text-slate-300">25K+ captions created for 10K+ independent artists</p>
+            {/* Placeholder/demo logos below. Replace with real partner/creator logos before launch. */}
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-5 text-sm font-semibold text-slate-400">
+              <span>broke</span>
+              <span>A4O</span>
+              <span>boom.</span>
+              <span>neon club</span>
+            </div>
+          </div>
+          <div id="examples">
+            <VideoMarquee />
           </div>
         </section>
 
-        <section className="mt-10 grid gap-4 md:grid-cols-3">
+        <section id="features" className="mt-10 grid gap-4 md:grid-cols-3">
           <FeatureVisual
             title="Hooks That Stop Scroll"
             desc="Built for music internet culture, not generic corp-speak."
@@ -79,7 +101,7 @@ export default function Home() {
           <PricingCard title="Pro" price="$19/mo" features={["Unlimited generations", "Advanced controls", "Export tools"]} />
         </section>
 
-        <section className="mt-10 rounded-2xl border bg-card/60 p-6">
+        <section id="faq" className="mt-10 rounded-2xl border bg-card/60 p-6">
           <h2 className="text-2xl font-bold [font-family:var(--font-space-grotesk)]">FAQ</h2>
           <div className="mt-4 space-y-3">
             <Faq q="How many captions per generation?" a="You get 10 captions, 5 hooks, and hashtag sets each run." />

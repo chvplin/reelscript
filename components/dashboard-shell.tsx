@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, History, Heart, Settings } from "lucide-react";
+import { Home, History, Heart, Search, Settings } from "lucide-react";
 import type { Profile } from "@/lib/types";
 import { signoutAction } from "@/app/(auth)/actions";
 
@@ -13,6 +13,7 @@ type DashboardShellProps = {
 
 const navItems = [
   { href: "/generate", label: "Generate", icon: Home },
+  { href: "/research", label: "Viral Research", icon: Search },
   { href: "/favorites", label: "Favorites", icon: Heart },
   { href: "/history", label: "History", icon: History },
   { href: "/settings", label: "Settings", icon: Settings },
@@ -70,7 +71,10 @@ export function DashboardShell({ profile, children }: DashboardShellProps) {
           </div>
         </header>
         <main className="flex-1 p-5 lg:p-8">{children}</main>
-        <nav className="sticky bottom-0 z-10 grid grid-cols-4 border-t border-card-border bg-slate-950/90 p-2 backdrop-blur lg:hidden">
+        <nav
+          className="sticky bottom-0 z-10 grid border-t border-card-border bg-slate-950/90 p-2 backdrop-blur lg:hidden"
+          style={{ gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}
+        >
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
