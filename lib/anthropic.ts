@@ -63,7 +63,7 @@ function safeJsonParse(raw: string) {
 export async function generateWithAnthropic(profile: Profile, input: ReturnType<typeof GenerationInputSchema.parse>): Promise<GenerationResult> {
   const { ANTHROPIC_API_KEY } = getServerEnv();
   if (!ANTHROPIC_API_KEY) {
-    throw new Error("Missing API key");
+    throw new Error("Missing API key: ANTHROPIC_API_KEY (or CLAUDE_API_KEY/ANTHROPIC_KEY)");
   }
 
   const client = new Anthropic({ apiKey: ANTHROPIC_API_KEY, timeout: 30_000 });

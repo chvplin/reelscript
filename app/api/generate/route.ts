@@ -89,7 +89,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "AI response format error. Please regenerate." }, { status: 502 });
     }
     if (message.includes("Missing API key")) {
-      return NextResponse.json({ error: "Service temporarily unavailable." }, { status: 503 });
+      console.error("Caption generation misconfigured:", message);
+      return NextResponse.json(
+        { error: "AI service is not configured on the server. Please contact support." },
+        { status: 503 },
+      );
     }
     return NextResponse.json({ error: "Failed to generate captions." }, { status: 500 });
   }
